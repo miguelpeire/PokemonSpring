@@ -2,87 +2,121 @@ package es.salesianos.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import es.salesianos.model.AbstractBag;
-import es.salesianos.model.Bag;
-import es.salesianos.model.Item;
-import es.salesianos.model.Person;
-import es.salesianos.model.Weapon;
+import es.salesianos.model.Entrenador;
+import es.salesianos.model.Pokemon;
 
 @Controller
 public class IndexController {
 
 	private static Logger log = LogManager.getLogger(IndexController.class);
 
-	private Person person;
-	private Item item;
-	private Bag bag1;
-	private AbstractBag bag;
+	@Autowired
+	private Entrenador entrenador;
 
 	@GetMapping("/")
 	public ModelAndView index() {
-		person = new Person();
-		person.setItem(new Item());
-		ModelAndView modelAndView = new ModelAndView("index", "command", person);
-		modelAndView.addObject("person", this.person);
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("entrenador", this.entrenador);
 		return modelAndView;
 	}
 
 	
 	@PostMapping("insert")
-	public ModelAndView personInsert(Person person) {
-		log.debug("personInsert:" + this.person.toString());		
-		addPageData(person);
-		ModelAndView modelAndView = new ModelAndView("index", "command", person);
-		modelAndView.addObject("recipe", this.person);
+	public ModelAndView entrenadorInsert(Entrenador entrenadorForm) {
+		log.debug("entrenadorInsert:" + this.entrenador.toString());
+		ModelAndView modelAndView = new ModelAndView("index");
+		addPageData(entrenadorForm);
+		modelAndView.addObject("entrenador", entrenador);
 		return modelAndView;
 	}
 	
-	private void addPageData(Person personForm) {
+	private void addPageData(Entrenador entrenadorForm) {
 
-		if (!StringUtils.isEmpty(personForm.getName())) {
-			this.person.setName(personForm.getName());
+		if (!StringUtils.isEmpty(entrenadorForm.getName())) {
+			entrenador.setName(entrenadorForm.getName());
 		}
 
-		if (!StringUtils.isEmpty(personForm.getBag())) {
-			bag.addItem(item);
-			personForm.setName("");
-			this.person.getBag().addItem(item);
-		}
-		if (!StringUtils.isEmpty(personForm.getItem())) {
-			Item item = new Item();
-			item.setName(personForm.getName());
-			personForm.setItem(item);
-			this.person.getItem().getName();
+		if (!StringUtils.isEmpty(entrenadorForm.getPokemon())) {
+			Pokemon item = new Pokemon();
+			if (entrenadorForm.getPokemon().getType().equalsIgnoreCase("active")) {
+
+				Pokemon attack = new Pokemon();
+				attack.setName(entrenadorForm.getPokemon().getName());
+				attack.setLevel(entrenadorForm.getPokemon().getLevel());
+				attack.setType(entrenadorForm.getPokemon().getType());
+				attack.setAttackPower((int) (Math.random() * (10 + (entrenadorForm.getPokemon().getLevel()) / 2))
+						+ ((entrenadorForm.getPokemon().getLevel()) / 2) + 1);
+				attack.setVidaMaxima(entrenadorForm.getPokemon().getLevel() * 4);
+				attack.setHP(attack.getVidaMaxima());
+				if (entrenador.getPrimary() == null) {
+					entrenador.setPrimary(attack);
+				} else if (entrenador.getSecondary() == null) {
+					entrenador.setSecondary(attack);
+				} else {
+					entrenador.setPrimary(attack);
+				}
+
+//			} else if (entrenadorForm.getPokemon().getType().equalsIgnoreCase("pokemon")) {
+//
+//				List<Pokemon> items = entrenador.getPrimary().getPokemons();
+//				items.add(item);
+//				entrenador.getPrimary().setPokemons(items);
+//				System.out.println("accesorios:" + items);
+
+			} else if (entrenadorForm.getPokemon().getType().equalsIgnoreCase("pokemon")) {
+				item.setName(entrenadorForm.getPokemon().getName());
+				item.setLevel(entrenadorForm.getPokemon().getLevel());
+				item.setType(entrenadorForm.getPokemon().getType());
+				item.setAttackPower((int) (Math.random() * (10 + (entrenadorForm.getPokemon().getLevel()) / 2))
+						+ ((entrenadorForm.getPokemon().getLevel()) / 2) + 1);
+				item.setVidaMaxima(entrenadorForm.getPokemon().getLevel() * 4);
+				item.setHP(item.getVidaMaxima());
+				this.entrenador.getTeam().addPokemon(item);
+			}
+			this.entrenador.setPokemon(item);
 		}
 	}
-	
-	@PostMapping("itemInsert")
-	public ModelAndView itemInsert(Person person) {
-		log.debug("ingredientInsert:" + this.person.toString());
-		addPageData(person);
-		ModelAndView modelAndView = new ModelAndView("index", "command", person);
-		modelAndView.addObject("recipe", this.person);
+
+	@PostMapping("switchActive")
+	public ModelAndView switchActive() {
+
+		Pokemon tmp;
+		tmp = this.entrenador.getPrimary();
+		this.entrenador.setPrimary(this.entrenador.getSecondary());
+		this.entrenador.setSecondary(tmp);
+		if (this.entrenador.getPrimary().getName() != null) {
+			System.out.println("Active pokemon: " + this.entrenador.getPrimary().getName());
+		}
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("entrenador", this.entrenador);
 		return modelAndView;
 	}
 
-	@PostMapping("switchWeapon")
-	public ModelAndView switchWeapon(Person person) {
-		Weapon tmp;
-		tmp = this.person.getPrimary();
-		this.person.setPrimary(this.person.getSecondary());
-		this.person.setSecondary(tmp);
-		System.out.println("El arma activa es " + this.person.getPrimary().getName());
-		ModelAndView modelAndView = new ModelAndView("index", "command", person);
-		modelAndView.addObject("person", this.person);
-		return modelAndView;
+	public void insertEnemy(Entrenador entrenadorForm, Pokemon enemy) {
+		enemy.setName("Charizard");
+		enemy.setLevel((int) (Math.random() * 10) + 70);
+		enemy.setAttackPower((int) (Math.random() * 30) * (enemy.getLevel()) + 10);
+		enemy.setVidaMaxima(enemy.getLevel() * 5);
+		enemy.setHP(enemy.getVidaMaxima());
+		enemy.setStatus("Alive");
 	}
 
+	@PostMapping("createEnemy")
+	public ModelAndView createEnemy(Entrenador entrenadorForm) {
+		Pokemon enemyPokemon = new Pokemon();
+		entrenador.setWild(enemyPokemon);
+		insertEnemy(entrenadorForm, enemyPokemon);
 
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("entrenador", this.entrenador);
+		return modelAndView;
+	}
 
 }
