@@ -9,5 +9,6 @@ public class Ultraball extends AbstractPokeball {
 
 	public Ultraball() {
 		capturePower = 50;
+		name = "ultraball";
 	}
 }

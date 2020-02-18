@@ -5,6 +5,7 @@ package es.salesianos.model;
 public class AbstractPokeball implements Pokeballs {
 
 	public int capturePower;
+	public String name;
 
 	@Override
 	public int getCapture() {
@@ -15,12 +16,8 @@ public class AbstractPokeball implements Pokeballs {
 		this.capturePower = capturePower;
 	}
 
-//	@Override
-//	public void capturePokemon(Pokemon pokemon, AbstractTeam team) {
-//		Random percentage = new Random();
-//		int chance = percentage.nextInt(99)+1;
-//		if(chance <= capturePower) {	
-//			team.addPokemon(pokemon);
-//	}
-//}
+	@Override
+	public String getName() {
+
+	}
 }

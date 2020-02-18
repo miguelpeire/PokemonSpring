@@ -9,6 +9,7 @@ public class Pokeball extends AbstractPokeball {
 
 	public Pokeball() {
 		capturePower = 10;
+		name = "pokeball";
 	}
 	
 }

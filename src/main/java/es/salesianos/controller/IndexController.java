@@ -23,6 +23,7 @@ public class IndexController {
 	private Entrenador entrenador;
 
 	private double multiplier;
+	private double multiplier2;
 
 	@GetMapping("/")
 	public ModelAndView index() {
@@ -176,11 +177,14 @@ public class IndexController {
 
 	@PostMapping("combat")
 	public ModelAndView combat(Entrenador entrenadorForm) {
-		getCombatRaces();
-		System.out.println(multiplier);
+//		getCombatRaces();
+		multiplier2 = Math.random() * 1;
+		System.out.println(multiplier2);
 		if (entrenador.getPrimary().getStatus() == "Alive") {
-			entrenador.getWild().setHP((entrenador.getWild().getHP()) - (int) ( entrenador.getPrimary().getAttackPower() * multiplier));
-			entrenador.getPrimary().setHP((entrenador.getPrimary().getHP()) - (int) ( entrenador.getWild().getAttackPower() * (1 / multiplier)));
+//			entrenador.getWild().setHP((entrenador.getWild().getHP()) - (int) ( entrenador.getPrimary().getAttackPower() * multiplier));
+//			entrenador.getPrimary().setHP((entrenador.getPrimary().getHP()) - (int) ( entrenador.getWild().getAttackPower() * (1 / multiplier)));
+			entrenador.getWild().setHP((entrenador.getWild().getHP()) - (int) (entrenador.getPrimary().getAttackPower() * multiplier2));
+			entrenador.getPrimary().setHP((entrenador.getPrimary().getHP()) - (int) (entrenador.getWild().getAttackPower() * multiplier2));
 		} else {
 			System.out.println(entrenador.getPrimary().getName() + " out of combat");
 		}

@@ -9,6 +9,7 @@ public class Masterball extends AbstractPokeball {
 
 	public Masterball() {
 		capturePower = 100;
+		name = "masterball";
 	}
 	
 }
