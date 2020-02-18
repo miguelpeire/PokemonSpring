@@ -128,6 +128,18 @@ public class IndexController {
 			enemy.setRace(races[(int) (Math.random() * races.length)]);
 		}
 	}
+	
+	public void insertEnemyForm(Entrenador entrenadorForm, Pokemon enemy) {
+			String races[] = { "Fire", "Water", "Grass"};
+//			enemy.setName;
+			enemy.setLevel((int) (Math.random() * 10) + 70);
+			enemy.setAttackPower((int) (Math.random() * 5) * (enemy.getLevel()) + 10);
+			enemy.setVidaMaxima(enemy.getLevel() * 5);
+			enemy.setHP(enemy.getVidaMaxima());
+			enemy.setStatus("Alive");
+			enemy.setType("pokemon");
+			enemy.setRace(races[(int) (Math.random() * races.length)]);
+	}
 
 	@PostMapping("createEnemy")
 	public ModelAndView createEnemy(Entrenador entrenadorForm) {
@@ -182,14 +194,23 @@ public class IndexController {
 	@PostMapping("capture")
 	public ModelAndView capture(Entrenador entrenadorForm) {
 		Random percentageCapture = new Random();
+		float percentage;
 		int chance = percentageCapture.nextInt(99)+1;
+		percentage = ((entrenador.getWild().getHP() * 100) / entrenador.getWild().getVidaMaxima());
+		if(percentage < 25) {
 		if(chance <= this.entrenador.getPokeballs().getCapture()) {	
 			entrenador.getTeam().addPokemon(entrenador.getWild());
+			System.out.println(percentage);
 			System.out.println(chance);
 			System.out.println("Pokemon captured!");
 		}else {
+			System.out.println(percentage);
 			System.out.println(chance);
 			System.out.println("Capture failed!");
+		}
+		}else {
+			System.out.println(percentage);
+			System.out.println("Capture failed, the enemy pokemon has to be below 25% of his health!");
 		}
 
 		ModelAndView modelAndView = new ModelAndView("index");
