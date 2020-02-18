@@ -13,9 +13,14 @@ public class Entrenador {
 	private String type;
 	private Pokemon pokemon;
 	private Pokemon wild;
+	private int aux;
+	private int aux2;
 
 	@Autowired
 	private Team team;
+
+	@Autowired
+	private Pokeballs pokeballs;
 
 	public String getName() {
 		return name;
@@ -87,6 +92,30 @@ public class Entrenador {
 
 	public void setWild(Pokemon wild) {
 		this.wild = wild;
+	}
+
+	public int getAux() {
+		return aux;
+	}
+
+	public void setAux(int aux) {
+		this.aux = aux;
+	}
+
+	public int getAux2() {
+		return aux2;
+	}
+
+	public void setAux2(int aux2) {
+		this.aux2 = aux2;
+	}
+
+	public Pokeballs getPokeballs() {
+		return pokeballs;
+	}
+
+	public void setPokeballs(Pokeballs pokeballs) {
+		this.pokeballs = pokeballs;
 	}
 
 }

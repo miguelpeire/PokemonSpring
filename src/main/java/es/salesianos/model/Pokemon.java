@@ -14,6 +14,8 @@ public class Pokemon {
 	private int HP = vidaMaxima;
 	private int attackPower;
 	private List<Pokemon> pokemons = new ArrayList<>();
+	private int capture;
+	private String race;
 
 	public String getName() {
 		return name;
@@ -82,5 +84,20 @@ public class Pokemon {
 	public void setPokemons(List<Pokemon> pokemons) {
 		this.pokemons = pokemons;
 	}
+
+	public int getCapture() {
+		return capture;
+	}
+
+	public void setCapture(int capture) {
+		this.capture = capture;
+	}
+	public String getRace() {
+		return race;
+	}
+	public void setRace(String race) {
+		this.race = race;
+	}
+
 
 }

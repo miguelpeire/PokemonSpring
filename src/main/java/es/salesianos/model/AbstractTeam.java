@@ -10,12 +10,12 @@ public abstract class AbstractTeam implements Team {
 
 	private int sumPokemones() {
 		int sum = 0;
-//		for (Pokemon item : pokemons) {
-//			try {
-//				sum;
-//			} catch (Exception e) {
-//			}
-//		}
+		for (Pokemon item : pokemons) {
+			try {
+				sum += 1;
+			} catch (Exception e) {
+			}
+		}
 		return sum;
 	}
 
@@ -26,15 +26,23 @@ public abstract class AbstractTeam implements Team {
 	public void setPokemons(List<Pokemon> pokemons) {
 		this.pokemons = pokemons;
 	}
+	
+	@Override
+	public boolean isFull() {
+		if (sumPokemones() == capacity)
+			return true;
+		else
+			return false;
+	}
 
 	@Override
 	public void addPokemon(Pokemon pokemon) {
-//		int weight = Integer.parseInt(pokemon.getPeso());
-//		if (spaceAvalaible() < weight) {
-//			System.out.println("no se pudo añadir el elemento " + pokemon.getName());
-//		} else {
+		if (isFull()) {
+			System.out.println("Team is full");
+		} else {
+			
 		pokemons.add(pokemon);
-//		}
+		}
 	}
 
 	public Pokemon setActivePokemon(int active) {
@@ -47,6 +55,7 @@ public abstract class AbstractTeam implements Team {
 		pokemon.setName(pokemons.get(active).getName());
 //		pokemon.setPeso(pokemons.get(active).getPeso());
 		pokemon.setStatus(pokemons.get(active).getStatus());
+		pokemon.setRace(pokemons.get(active).getRace());
 //		pokemon.setType(pokemons.get(active).getType());
 
 		return pokemon;
@@ -64,14 +73,9 @@ public abstract class AbstractTeam implements Team {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-
-	@Override
-	public boolean isFull() {
-		return capacity <= sumPokemones();
-	}
 	
-	public void removeById(int b) {
-		pokemons.remove(b);
+	public void removeById(int remove) {
+		pokemons.remove(remove);
 	}
 
 

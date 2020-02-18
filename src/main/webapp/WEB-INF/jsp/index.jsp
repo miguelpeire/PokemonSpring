@@ -10,31 +10,43 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cosmo/bootstrap.min.css"
 	rel="stylesheet">
+<style>
+body {
+    background-image: url("img/background2.jpg");
+}
+</style>
 </head>
 <body>
 
 	<form:form action="insert" method="post" modelAttribute="entrenador">
-		<img src="img/trainer.png" id="trainer">
-		<span>Entrenador name:</span>
+		<img src="img/logo2.png" id="trainer">
+		<br></br>
+		<span>Trainer name:</span>
 		<form:input type="text" path="name" />
 		<input type="submit" value="Save entrenador name" />
 	</form:form>
 	<br />
 	<br />
-	The name of the entrenador is <span><c:out value="${entrenador.name}" /></span>
+	The name of the trainer is <span><c:out value="${entrenador.name}" /></span>
 	<br />
 	<br />
 	<br />
 
 	<form:form action="insert" method="post" modelAttribute="entrenador">
-		<span>nuevo pokemon:</span>
-		<span>nombre:</span>
+		<span>Field "type" instructions.
+		      Enter "pokemon" to add it to your team.
+			  Enter "active" to add it directly to your active pokemon</span>
+			  <br></br>
+		<span>New Pokemon:</span>
+		<span>Name:</span>
 		<form:input type="text" path="pokemon.name" />
-		<span>level:</span>
+		<span>Level:</span>
 		<form:input type="text" path="pokemon.level" />
-		<span>tipo:</span>
+		<span>Type:</span>
 		<form:input type="text" path="pokemon.type" />
-		<input type="submit" value="guardar pokemon" />
+		<input type="submit" value="save pokemon" />
+		
+		<br></br>
 	</form:form>
 		<table border="1">
 		<thead>
@@ -44,6 +56,7 @@
 				<td>tipo</td>
 				<td>hp</td>
 				<td>attack power</td>
+				<td>Race type</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,89 +67,119 @@
 					<td><c:out value="${pokemon.type}" /></td>
 					<td><c:out value="${pokemon.HP}" /></td>
 					<td><c:out value="${pokemon.attackPower}" /></td>
+					<td><c:out value="${pokemon.race}" /></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	
-	<form:form action="createEnemy" method="post" modelAttribute="entrenador">
-		<input type="submit" value="Entrar a la hierba alta"/>
-	</form:form>
 
-	<a>Pokemon Activo</a><br/><c:out value="${entrenador.primary.name}"/> &#8212;
-	<c:out value="${entrenador.primary.status}"/>&#8212; Nivel: &nbsp;
-	<c:out value="${entrenador.primary.level}"/> Vida: &nbsp;
-	<c:out value="${entrenador.primary.HP}"/> &#47;
-	<c:out value="${entrenador.primary.vidaMaxima}"/> Ataque: &nbsp;
-	<c:out value="${entrenador.primary.attackPower}"/>
-	<br/>
-	<a>Pokemon Enemigo</a><br/><c:out value="${entrenador.wild.name}"/> &#8212;
-	<c:out value="${entrenador.wild.status}"/>&#8212; Nivel: &nbsp;
-	<c:out value="${entrenador.wild.level}"/> Vida: &nbsp;
-	<c:out value="${entrenador.wild.HP}"/> &#47;
-	<c:out value="${entrenador.wild.vidaMaxima}"/> Ataque: &nbsp;
-	<c:out value="${entrenador.wild.attackPower}"/>
-	<img src="img/charizard.png" id="charizard">
-
-<!-- 		<table border="1"> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<td>ataques disponibles</td> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody> -->
-<!-- 			<tr> -->
-<!-- 				primaria -->
-<%-- 				<td>primaria: <c:out value="${entrenador.primary.name}" /></td> --%>
-<!-- 			</tr> -->
-<!-- 			<tr> -->
-<!-- 				secundaria -->
-<%-- 				<td><c:out value="${entrenador.secondary.name}" /></td> --%>
-<!-- 			</tr> -->
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-<!-- 	<br /> -->
-<!-- 	<br /> -->
-<!-- 	<table border="1"> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<td>primary customization</td> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody> -->
-<%-- 			<c:forEach var="pokemon" items="${entrenador.primary.pokemons}"> --%>
-<!-- 				<tr> -->
-<%-- 					<td><c:out value="${pokemon.name}" /></td> --%>
-<%-- 					<td><c:out value="${pokemon.level}" /></td> --%>
-<%-- 					<td><c:out value="${pokemon.type}" /></td> --%>
-<!-- 				</tr> -->
-<%-- 			</c:forEach> --%>
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-<!-- 	<br /> -->
-
-
-<!-- 	<table border="1"> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<td>secundary customization</td> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody> -->
-<%-- 			<c:forEach var="pokemon" items="${entrenador.secondary.pokemons}"> --%>
-<!-- 				<tr> -->
-<%--                     <td><c:out value="${pokemon.name}" /></td> --%>
-<%--                     <td><c:out value="${pokemon.level}" /></td> --%>
-<%--                     <td><c:out value="${pokemon.type}" /></td> --%>
-<!-- 				</tr> -->
-<%-- 			</c:forEach> --%>
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-
-
-	<form:form action="switchActive" method="post">
+	<form:form action="switchActive" method="post" modelAttribute="entrenador">
+		<form:select path="aux">
+			<c:set var = "count" scope = "page" value = "0"/>
+			<c:forEach var="item" items="${entrenador.team.pokemons}">
+				<form:option value="${count}"><c:out value="${item.name} #${count + 1}"/></form:option>
+				<c:set var="count" value="${count + 1}" scope="page"/>
+			</c:forEach>
+		</form:select>
 		<input type="submit" value="Change active pokemon" />
 	</form:form>
 	
+	<form:form action="deletePokemon" method="post" modelAttribute="entrenador">
+					<form:select path="aux2">
+						<c:set var = "count" scope = "page" value = "0"/>
+						<c:forEach var="item" items="${entrenador.team.pokemons}">
+							<form:option value="${count}"><c:out value="${item.name} #${count + 1}"/></form:option>
+							<c:set var="count" value="${count + 1}" scope="page"/>
+						</c:forEach>
+					</form:select>
+					<input type="submit" value="Delete Pokemon"/>
+				</form:form>
+	
+	<form:form action="createEnemy" method="post" modelAttribute="entrenador">
+		<input type="submit" value="Generate an enemy"/>
+	</form:form>
+
+	<br />
+	<img src="img/ally.png" id="trainer">
+	<br />
+<%-- 	<a>Active Pokemon</a><br/><c:out value="${entrenador.primary.name}"/> --%>
+<%-- 	<c:out value="${entrenador.primary.status}"/> Nivel:  --%>
+<%-- 	<c:out value="${entrenador.primary.level}"/> Vida:  --%>
+<%-- 	<c:out value="${entrenador.primary.HP}"/>  --%>
+<%-- 	<c:out value="${entrenador.primary.vidaMaxima}"/> Ataque:  --%>
+<%-- 	<c:out value="${entrenador.primary.attackPower}"/> --%>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<td>pokemon</td>
+				<td>status</td>
+				<td>level</td>
+				<td>hp</td>
+				<td>Max hp</td>
+				<td>attack power</td>
+				<td>Race type</td>
+			</tr>
+		</thead>
+		<tbody>
+				<tr>
+					<td><c:out value="${entrenador.primary.name}" /></td>
+					<td><c:out value="${entrenador.primary.status}" /></td>
+					<td><c:out value="${entrenador.primary.level}" /></td>
+					<td><c:out value="${entrenador.primary.HP}" /></td>
+					<td><c:out value="${entrenador.primary.vidaMaxima}" /></td>
+					<td><c:out value="${entrenador.primary.attackPower}" /></td>
+					<td><c:out value="${entrenador.primary.race}" /></td>
+				</tr>
+		</tbody>
+	</table>
+	<br/>
+	
+	<img src="img/enemy.gif" id="trainer">
+	<br />
+<%-- 	<a>Enemy Pokemon</a><br/><c:out value="${entrenador.wild.name}"/> --%>
+<%-- 	<c:out value="${entrenador.wild.status}"/> Nivel:  --%>
+<%-- 	<c:out value="${entrenador.wild.level}"/> Vida:  --%>
+<%-- 	<c:out value="${entrenador.wild.HP}"/>  --%>
+<%-- 	<c:out value="${entrenador.wild.vidaMaxima}"/> Ataque:  --%>
+<%-- 	<c:out value="${entrenador.wild.attackPower}"/> --%>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<td>pokemon</td>
+				<td>status</td>
+				<td>level</td>
+				<td>hp</td>
+				<td>Max hp</td>
+				<td>attack power</td>
+				<td>Race type</td>
+			</tr>
+		</thead>
+		<tbody>
+				<tr>
+					<td><c:out value="${entrenador.wild.name}" /></td>
+					<td><c:out value="${entrenador.wild.status}" /></td>
+					<td><c:out value="${entrenador.wild.level}" /></td>
+					<td><c:out value="${entrenador.wild.HP}" /></td>
+					<td><c:out value="${entrenador.wild.vidaMaxima}" /></td>
+					<td><c:out value="${entrenador.wild.attackPower}" /></td>
+					<td><c:out value="${entrenador.wild.race}" /></td>
+				</tr>
+		</tbody>
+	</table>
+
+<br />
+			<form:form action="combat" method="post" modelAttribute="entrenador">
+				<input type="submit" value="Attack!"/>
+			</form:form>
+			<form:form action="capture" method="post" modelAttribute="entrenador">
+				<input type="submit" value="Use pokeball"/>
+			</form:form>
+			<form:form action="heal" method="post" modelAttribute="entrenador">
+				<input type="submit" value="Heal"/>
+			</form:form>
+			<br />
+			<img src="img/thanks.gif" id="trainer">
 </body>
 </html>
