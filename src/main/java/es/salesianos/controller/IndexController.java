@@ -131,10 +131,10 @@ public class IndexController {
 	
 	public void insertEnemyForm(Entrenador entrenadorForm, Pokemon enemy) {
 			String races[] = { "Fire", "Water", "Grass"};
-//			enemy.setName;
+			enemy.setName(entrenadorForm.getPokemon().getName());
 			enemy.setLevel((int) (Math.random() * 10) + 70);
-			enemy.setAttackPower((int) (Math.random() * 5) * (enemy.getLevel()) + 10);
-			enemy.setVidaMaxima(enemy.getLevel() * 5);
+			enemy.setAttackPower(entrenadorForm.getPokemon().getAttackPower());
+			enemy.setVidaMaxima(entrenadorForm.getPokemon().getVidaMaxima());
 			enemy.setHP(enemy.getVidaMaxima());
 			enemy.setStatus("Alive");
 			enemy.setType("pokemon");
@@ -146,6 +146,17 @@ public class IndexController {
 		Pokemon enemyPokemon = new Pokemon();
 		entrenador.setWild(enemyPokemon);
 		insertEnemy(entrenadorForm, enemyPokemon);
+
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("entrenador", this.entrenador);
+		return modelAndView;
+	}
+	
+	@PostMapping("createEnemyForm")
+	public ModelAndView createEnemyForm(Entrenador entrenadorForm) {
+		Pokemon enemyPokemon = new Pokemon();
+		entrenador.setWild(enemyPokemon);
+		insertEnemyForm(entrenadorForm, enemyPokemon);
 
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("entrenador", this.entrenador);
@@ -199,7 +210,7 @@ public class IndexController {
 		percentage = ((entrenador.getWild().getHP() * 100) / entrenador.getWild().getVidaMaxima());
 		if(percentage < 25) {
 		if(chance <= this.entrenador.getPokeballs().getCapture()) {	
-			entrenador.getTeam().addPokemon(entrenador.getWild());
+			entrenador.getTeam().addPokemonCaptured(entrenador.getWild());
 			System.out.println(percentage);
 			System.out.println(chance);
 			System.out.println("Pokemon captured!");

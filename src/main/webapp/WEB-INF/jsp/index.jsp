@@ -48,6 +48,19 @@ body {
 		
 		<br></br>
 	</form:form>
+	<form:form action="createEnemyForm" method="post" modelAttribute="entrenador">
+		<span>New Enemy:</span>
+		<span>Name:</span>
+		<form:input type="text" path="pokemon.name" />
+		<span>HP:</span>
+		<form:input type="text" path="pokemon.vidaMaxima" />
+		<span>Attack Power:</span>
+		<form:input type="text" path="pokemon.attackPower" />
+		<input type="submit" value="save enemy" />
+		
+		<br></br>
+	</form:form>
+		<span>YOUR TEAM:</span>
 		<table border="1">
 		<thead>
 			<tr>
@@ -96,18 +109,37 @@ body {
 				</form:form>
 	
 	<form:form action="createEnemy" method="post" modelAttribute="entrenador">
-		<input type="submit" value="Generate an enemy"/>
+		<input type="submit" value="Generate a random enemy"/>
 	</form:form>
-
+	<br />	
+	<span>CAPTURED POKEMON:</span>
+	<table border="1">
+		<thead>
+			<tr>
+				<td>pokemon</td>
+				<td>level</td>
+				<td>tipo</td>
+				<td>hp</td>
+				<td>attack power</td>
+				<td>Race type</td>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="pokemon" items="${entrenador.team.pokemonsCaptured}">
+				<tr>
+					<td><c:out value="${pokemon.name}" /></td>
+					<td><c:out value="${pokemon.level}" /></td>
+					<td><c:out value="${pokemon.type}" /></td>
+					<td><c:out value="${pokemon.HP}" /></td>
+					<td><c:out value="${pokemon.attackPower}" /></td>
+					<td><c:out value="${pokemon.race}" /></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 	<br />
 	<img src="img/ally.png" id="trainer">
 	<br />
-<%-- 	<a>Active Pokemon</a><br/><c:out value="${entrenador.primary.name}"/> --%>
-<%-- 	<c:out value="${entrenador.primary.status}"/> Nivel:  --%>
-<%-- 	<c:out value="${entrenador.primary.level}"/> Vida:  --%>
-<%-- 	<c:out value="${entrenador.primary.HP}"/>  --%>
-<%-- 	<c:out value="${entrenador.primary.vidaMaxima}"/> Ataque:  --%>
-<%-- 	<c:out value="${entrenador.primary.attackPower}"/> --%>
 	
 	<table border="1">
 		<thead>
@@ -137,12 +169,6 @@ body {
 	
 	<img src="img/enemy.gif" id="trainer">
 	<br />
-<%-- 	<a>Enemy Pokemon</a><br/><c:out value="${entrenador.wild.name}"/> --%>
-<%-- 	<c:out value="${entrenador.wild.status}"/> Nivel:  --%>
-<%-- 	<c:out value="${entrenador.wild.level}"/> Vida:  --%>
-<%-- 	<c:out value="${entrenador.wild.HP}"/>  --%>
-<%-- 	<c:out value="${entrenador.wild.vidaMaxima}"/> Ataque:  --%>
-<%-- 	<c:out value="${entrenador.wild.attackPower}"/> --%>
 	
 	<table border="1">
 		<thead>
