@@ -18,6 +18,6 @@ public class AbstractPokeball implements Pokeballs {
 
 	@Override
 	public String getName() {
-
+		return name;
 	}
 }

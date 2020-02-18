@@ -23,12 +23,10 @@ body {
 		<br></br>
 		<span>Trainer name:</span>
 		<form:input type="text" path="name" />
-		<input type="submit" value="Save entrenador name" />
+		<input type="submit" value="Save trainer name" />
 	</form:form>
 	<br />
-	<br />
 	The name of the trainer is <span><c:out value="${entrenador.name}" /></span>
-	<br />
 	<br />
 	<br />
 
@@ -196,16 +194,25 @@ body {
 	</table>
 
 <br />
-			<form:form action="combat" method="post" modelAttribute="entrenador">
-				<input type="submit" value="Attack!"/>
-			</form:form>
-			<form:form action="capture" method="post" modelAttribute="entrenador">
-				<input type="submit" value="Use pokeball"/>
-			</form:form>
-			<form:form action="heal" method="post" modelAttribute="entrenador">
-				<input type="submit" value="Heal"/>
-			</form:form>
+	<table>
+		<tr>
+			<td>
+				<form:form action="combat" method="post" modelAttribute="entrenador">
+					<input type="submit" value="Attack!"/>
+				</form:form>
+			</td>
+			<td>
+				<form:form action="capture" method="post" modelAttribute="entrenador">
+					<input type="submit" value="Use pokeball"/>
+				</form:form>
+			</td>
+			<td>
+				<form:form action="heal" method="post" modelAttribute="entrenador">
+					<input type="submit" value="Heal"/>
+				</form:form>
+			</td>
+		</tr>
+	</table>
 			<br />
-			<img src="img/thanks.gif" id="trainer">
 </body>
 </html>

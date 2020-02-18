@@ -24,6 +24,7 @@ public class IndexController {
 
 	private double multiplier;
 	private double multiplier2;
+	int masterballs = 1;
 
 	@GetMapping("/")
 	public ModelAndView index() {
@@ -113,7 +114,7 @@ public class IndexController {
 		enemy.setName(enemyPokemons[(int) (Math.random() * enemyPokemons.length)]);
 		if (enemy.getName() == "Gorka") {
 			enemy.setLevel(99);
-			enemy.setAttackPower(10000);
+			enemy.setAttackPower(100);
 			enemy.setVidaMaxima(enemy.getLevel() * 5);
 			enemy.setHP(enemy.getVidaMaxima());
 			enemy.setStatus("Alive");
@@ -212,20 +213,31 @@ public class IndexController {
 		float percentage;
 		int chance = percentageCapture.nextInt(99)+1;
 		percentage = ((entrenador.getWild().getHP() * 100) / entrenador.getWild().getVidaMaxima());
-		if(percentage < 25) {
-		if(chance <= this.entrenador.getPokeballs().getCapture()) {	
-			entrenador.getTeam().addPokemonCaptured(entrenador.getWild());
-			System.out.println(percentage);
-			System.out.println(chance);
-			System.out.println("Pokemon captured!");
+		System.out.println(entrenador.getPokeballs().getName());
+		if(this.entrenador.getPokeballs().getName() == "masterball") {
+			if(masterballs == 1) {
+				entrenador.getTeam().addPokemonCaptured(entrenador.getWild());
+				masterballs = 0;
+				System.out.println(masterballs);
+			}else {
+				System.out.println("You don't have any more masterballs left!");
+			}
 		}else {
-			System.out.println(percentage);
-			System.out.println(chance);
-			System.out.println("Capture failed!");
-		}
-		}else {
-			System.out.println(percentage);
-			System.out.println("Capture failed, the enemy pokemon has to be below 25% of his health!");
+			if(percentage < 25) {
+				if(chance <= this.entrenador.getPokeballs().getCapture()) {	
+					entrenador.getTeam().addPokemonCaptured(entrenador.getWild());
+					System.out.println(percentage);
+					System.out.println(chance);
+					System.out.println("Pokemon captured!");
+				}else {
+					System.out.println(percentage);
+					System.out.println(chance);
+					System.out.println("Capture failed!");
+				}
+			}else {
+				System.out.println(percentage);
+				System.out.println("Capture failed, the enemy pokemon has to be below 25% of his health!");
+			}
 		}
 
 		ModelAndView modelAndView = new ModelAndView("index");
